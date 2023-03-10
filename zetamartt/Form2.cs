@@ -68,12 +68,14 @@ namespace zetamartt
         }
         public void Addsave()
         {
-            lbltext.Text = "Add barang";
-            btnSave.Text = "Save";
+            // lbltext.Text = "Add barang";
+            // btnSave.Text = "Save";
         }
 
         public void Clear()
         {
+            lbltext.Text = "Add barang";
+            btnSave.Text = "Save";
             txtNamabarang.Text = txtKodebarang.Text = txtStok.Text = txtHarga.Text = txtExpaired.Text = String.Empty;
             pictureBox1.Image = null;
         }
@@ -111,16 +113,16 @@ namespace zetamartt
                 pictureBox1.Image.Save(ms, pictureBox1.Image.RawFormat);
                 byte[] img = ms.ToArray();
 
-                string sql = "INSERT INTO zeamart_tbl VALUES (NULL, @Zeamartnama_barang, @Zeamartkode_barang, @Zeamartstok, @Zeamartharga, @Zeamartexpired, @Zeamartimage, NULL)";
-                MySqlConnection con = GetConnection();
-                MySqlCommand cmd = new MySqlCommand(sql, con);
+                string sql = "INSERT INTO zeamart_tbl VALUES (NULL, @Zeamartnama_barang, @Zeamartkode_barang, @Zeamartstok, @Zeamartharga, @Zeamartexpired, NULL, @Zeamartimage)";
+                MySqlConnection conn = GetConnection();
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
                 cmd.CommandType = CommandType.Text;
                 cmd.Parameters.Add("@Zeamartnama_barang", MySqlDbType.VarChar).Value = txtNamabarang.Text;
                 cmd.Parameters.Add("@Zeamartkode_barang", MySqlDbType.VarChar).Value = txtKodebarang.Text;
                 cmd.Parameters.Add("@Zeamartstok", MySqlDbType.VarChar).Value = txtStok.Text;
                 cmd.Parameters.Add("@Zeamartharga", MySqlDbType.VarChar).Value = txtHarga.Text;
                 cmd.Parameters.Add("@Zeamartexpired", MySqlDbType.VarChar).Value = txtExpaired.Text;
-                cmd.Parameters.Add("@Zeamartimage", MySqlDbType.VarChar).Value = img;
+                cmd.Parameters.Add("@Zeamartimage", MySqlDbType.LongBlob).Value = img;
                 try
                 {
                     cmd.ExecuteNonQuery();
@@ -130,7 +132,7 @@ namespace zetamartt
                 {
                     MessageBox.Show("Zeamart tidak ditambahkan. \n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                con.Close();
+                conn.Close();
             }
             if(btnSave.Text == "Update")
             {
@@ -139,8 +141,8 @@ namespace zetamartt
                 byte[] img = ms.ToArray();
 
                 string sql = "UPDATE zeamart_tbl SET nama_barang = @Zeamartnama_barang, kode_barang = @Zeamartkode_barang, stok = @Zeamartstok, harga = @Zeamartharga, expired = @Zeamartexpired, image = @Zeamartimage WHERE ID = @ZeamartID";
-                MySqlConnection con = GetConnection();
-                MySqlCommand cmd = new MySqlCommand(sql, con);
+                MySqlConnection conn = GetConnection();
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
                 MySqlDataAdapter adp = new MySqlDataAdapter(cmd); 
                 cmd.CommandType = CommandType.Text;
                 cmd.Parameters.Add("@ZeamartID", MySqlDbType.VarChar).Value = id;
@@ -149,7 +151,7 @@ namespace zetamartt
                 cmd.Parameters.Add("@Zeamartstok", MySqlDbType.VarChar).Value = txtStok.Text;
                 cmd.Parameters.Add("@Zeamartharga", MySqlDbType.VarChar).Value = txtHarga.Text;
                 cmd.Parameters.Add("@Zeamartexpired", MySqlDbType.VarChar).Value = txtExpaired.Text;
-                cmd.Parameters.Add("@Zeamartimage", MySqlDbType.Blob).Value = img;
+                cmd.Parameters.Add("@Zeamartimage", MySqlDbType.LongBlob).Value = img;
                 try
                 {
                     cmd.ExecuteNonQuery();
@@ -159,7 +161,7 @@ namespace zetamartt
                 {
                     MessageBox.Show("Zeamart tidak menubah. \n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                con.Close();
+                conn.Close();
             }
             _parent.Display();
         }

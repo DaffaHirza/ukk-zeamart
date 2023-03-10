@@ -37,7 +37,7 @@ namespace zetamartt
             cmd.Parameters.Add("@Zeamartstok", MySqlDbType.VarChar).Value = zmt.Stok;
             cmd.Parameters.Add("@Zeamartharga", MySqlDbType.VarChar).Value = zmt.Harga;
             cmd.Parameters.Add("@Zeamartexpired", MySqlDbType.VarChar).Value = zmt.Expired;
-            cmd.Parameters.Add("@Zeamartimage", MySqlDbType.VarChar).Value = zmt.Image;
+            cmd.Parameters.Add("@Zeamartimage", MySqlDbType.LongBlob).Value = zmt.Image;
             try
             {
                 cmd.ExecuteNonQuery();
@@ -62,7 +62,7 @@ namespace zetamartt
             cmd.Parameters.Add("@Zeamartstok", MySqlDbType.VarChar).Value = zmt.Stok;
             cmd.Parameters.Add("@Zeamartharga", MySqlDbType.VarChar).Value = zmt.Harga;
             cmd.Parameters.Add("@Zeamartexpired", MySqlDbType.VarChar).Value = zmt.Expired;
-            cmd.Parameters.Add("@Zeamartimage", MySqlDbType.Blob).Value = zmt.Image;
+            cmd.Parameters.Add("@Zeamartimage", MySqlDbType.LongBlob).Value = zmt.Image;
             try
             {
                 cmd.ExecuteNonQuery();
